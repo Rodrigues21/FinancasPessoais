@@ -27,3 +27,6 @@ Route::patch('/me/edit/password', 'UserController@updatePassword')->name('me.upd
 Route::get('/perfis', 'UserController@perfis')->name('perfis')->middleware('auth');
 Route::post('perfis/block', 'UserController@manageblock')->name('perfis.block')->middleware('auth');
 Route::post('perfis/promote', 'UserController@managepromote')->name('perfis.promote')->middleware('auth');
+
+Route::get('/contas', 'ContaController@index')->name('contas')->middleware('auth');
+Route::get('/contas/create', 'ContaController@create')->name('contas.create')->middleware('auth');

@@ -43,8 +43,8 @@
                         <th>Email</th>
                         @if($user->adm)
                             <th>Tipo</th>
-                            <th>Bloqueado</th>
-                            <th>Acções</th>
+                            <th>Estado</th>
+                            <th>Ações</th>
                         @endif
                     </tr>
                 </thead>
@@ -61,36 +61,44 @@
                         <td>{{$u->email}}</td>
                         @if($user->adm)
                             <td>{{$u->adm ? 'Administrador' : 'Utilizador'}}</th>
-                            <td>{{$u->bloqueado ? 'Sim' : 'Não'}}</th>
-                            <td>                                
-                                <div class="col-sm-12">
+                            <td>{{$u->bloqueado ? 'Bloqueado' : 'Desbloqueado'}}</th>
+                            <td style="width:10%">                                
+                                
 
                                     @if($user->id != $u->id)
-                                    <form action="{{ route('perfis.block') }}" method="POST">
-                                        @csrf
-                                        <input name="block_user" type="hidden" value="{{$u->id}}">
-                                        @if($u->bloqueado)
-                                            <button type="submit" class="btn btn-primary btn-block">Desbloquear</button>
-                                        @else
-                                            <button type="submit" class="btn btn-danger btn-block">Bloquear</button>
-                                        @endif
-                                        
-                                    </form> 
+                                    <div class="btn-group">
+                                        <div class="column" style= "margin-right: 5px;  margin-top: 5px;"> 
+                                            <form action="{{ route('perfis.promote') }}" method="POST">
+                                                @csrf
+                                                <input name="block_promote" type="hidden" value="{{$u->id}}">
+                                                @if($u->adm)
+                                                    <button type="submit" class="btn btn-danger "><span class="fa fa-arrow-down"></span></button>
+                                                @else
+                                                    <button type="submit" class="btn btn-success"><span class="fa fa-arrow-up"></span></button>
+                                                @endif
+                                                
+                                            </form> 
+                                        </div>
+
+                                        <div class="column" style= "margin-right: 5px;  margin-top: 5px;">  
+                                            <form action="{{ route('perfis.block') }}" method="POST">
+                                                @csrf
+                                                <input name="block_user" type="hidden" value="{{$u->id}}">
+                                                @if($u->bloqueado)
+                                                    <button type="submit" class="btn btn-success"><span class="fa fa-unlock"></span></button>
+                                                @else
+                                                    <button type="submit" class="btn btn-danger"><span class="fa fa-lock"></span></button>
+                                                @endif
+                                                
+                                            </form> 
+                                        </div>
+                                   
                                 
                                
-
-                                    <form action="{{ route('perfis.promote') }}" method="POST">
-                                        @csrf
-                                        <input name="block_promote" type="hidden" value="{{$u->id}}">
-                                        @if($u->adm)
-                                            <button type="submit" class="btn btn-danger btn-block">Despromover</button>
-                                        @else
-                                            <button type="submit" class="btn btn-primary btn-block">Promover</button>
-                                        @endif
                                         
-                                    </form> 
+                                </div>
                                     @endif 
-                                </div> 
+                               
                                     
                                     
                                 

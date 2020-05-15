@@ -76,11 +76,8 @@ class UserController extends Controller
         $qry = User::query();
         $estado = request('estado');
         $tipo = request('tipo');
-
-        $cena= $request->input('estado');
-        
-        
-       //Filtrar Nome
+            
+        //Filtrar Nome
         if ($request->filled('name') && !$request->filled('email') && (request('tipo') == "empty") && (request('estado') == "empty")){
             $qry = $qry->where('name', 'LIKE', "%{$request->query('name')}%");
         }
@@ -158,7 +155,7 @@ class UserController extends Controller
         $user_id = request('block_user');
         $user = User::find($user_id);
         
-        if(auth()->user()->id != $user->id){
+        if(Auth::user()->id != $user->id){
             $user->bloqueado = !$user->bloqueado;
             $user->save();
         }
@@ -173,7 +170,7 @@ class UserController extends Controller
         
         $user = User::find($user_id);
         
-        if(auth()->user()->id != $user->id){
+        if(Auth::user()->id != $user->id){
             $user->adm = !$user->adm;
             $user->save();
         }
