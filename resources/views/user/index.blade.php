@@ -10,22 +10,25 @@
             <img src="storage/fotos/foto.png" class="rounded" width="170" height="170" style="max-width: 100%; border-radius: 50%; object-fit: cover">                        
         @endif
     </div>
-    <div>  
-        <h1>{{$user->name}}</h1>
-    </div>
-    <div>
-        <p><img src="storage/img/email.png"  width="35"  style="max-width: 100%; object-fit: cover">{{$user->email}}</img></p>
-    </div>
+    
+        <div>  
+            <h1>{{$user->name}}</h1>
+        </div>
+        <div class="column"> 
+        <div>
+            <p><span class="fa fa-envelope-o" style= "margin-right: 5px"></span>{{$user->email}}</p>
+        </div>
 
-    <div>
-        @if ($user->NIF)
-            <p><img src="storage/img/nif.png"  width="35"  style="max-width: 100%; object-fit: cover">{{$user->NIF}}</img></p>
-        @endif
-    </div>
-    <div>
-        @if ($user->telefone)
-            <p><img src="storage/img/telefone.png"  width="35"  style="max-width: 100%; object-fit: cover">{{$user->telefone}}</img></p>
-        @endif
+        <div>
+            @if ($user->NIF)
+                <p><span class="fa fa-id-card" style= "margin-right: 5px"></span>{{$user->NIF}}</p>               
+            @endif
+        </div>
+        <div>
+            @if ($user->telefone)
+                <p><span class="fa fa-phone" style= "margin-right: 5px"></span>{{$user->telefone}}</p>
+            @endif
+        </div>
     </div>
 </div>
 <div class="container">

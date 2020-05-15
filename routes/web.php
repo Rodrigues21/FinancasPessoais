@@ -30,3 +30,4 @@ Route::post('perfis/promote', 'UserController@managepromote')->name('perfis.prom
 
 Route::get('/contas', 'ContaController@index')->name('contas')->middleware('auth');
 Route::get('/contas/create', 'ContaController@create')->name('contas.create')->middleware('auth');
+Route::post('/contas/create', 'ContaController@store')->name('contas.store')->middleware('auth');
