@@ -1,5 +1,13 @@
 @extends('layouts.app')
 
+@if (session('alert-msg'))
+ <div class="alert alert-{{ session('alert-type') }}">
+ <span class="closebtn"
+ onclick="this.parentElement.style.display='none';">&times;</span>
+ <span>{{ session('alert-msg') }}</span>
+ </div>
+ @endif
+
 @section('content')
 
 <div class="col-lg-12 text-center">

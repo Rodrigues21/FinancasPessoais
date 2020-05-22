@@ -36,4 +36,3 @@ Route::get('/contas/detalhes/{conta}', 'MovimentoController@movimentosConta')->n
 Route::get('/contas/detalhes/{conta}/create', 'MovimentoController@create')->name('movimento.create')->middleware('auth');
 Route::post('/contas/detalhes/{conta}/create', 'MovimentoController@store')->name('movimento.store')->middleware('auth');
 Route::get('/movimentos/{movimento}/doc', 'MovimentoController@displayDoc')->name('movimentos.doc')->middleware('auth');
- 

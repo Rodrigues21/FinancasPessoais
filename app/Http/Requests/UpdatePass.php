@@ -30,4 +30,16 @@ class UpdatePass extends FormRequest
             'password_confirmation'=>'required|same:password',
         ];
     }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'old_password' => 'This password doesn´t match with your old password!',
+        ];
+    }
 }
