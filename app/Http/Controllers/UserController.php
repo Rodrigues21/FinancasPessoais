@@ -78,74 +78,28 @@ class UserController extends Controller
         $tipo = request('tipo');
             
         //Filtrar Nome
-        if ($request->filled('name') && !$request->filled('email') && (request('tipo') == "empty") && (request('estado') == "empty")){
+        if ($request->filled('name') ){
             $qry = $qry->where('name', 'LIKE', "%{$request->query('name')}%");
         }
 
         //Filtrar Email
-        if (!$request->filled('name') && $request->filled('email') && (request('tipo') == "empty") && (request('estado') == "empty")){
+        if ($request->filled('email')){
             $qry = $qry->where('email', 'LIKE', "%{$request->query('email')}%");
         }
 
         //Filtrar Tipo (Adminstrador/Utilizador)
-        if (!$request->filled('name') && !$request->filled('email')  && (request('tipo') != "empty") && (request('estado') == "empty")){
+        if (isset($request->tipo) && $request->tipo != "empty"){
             $qry = $qry->where('adm', $tipo);
         }
 
         //Filtrar Estado (Bloqueado/Desbloqueado)
-        if (!$request->filled('name') && !$request->filled('email')  && (request('tipo') == "empty") && (request('estado') != "empty")){
+        if (isset($request->estado) && $request->estado != "empty"){
             $qry = $qry->where('bloqueado', $estado);
         }
 
-        //Filtrar Nome e Email
-        if ($request->filled('name') && $request->filled('email') && (request('tipo') == "empty") && (request('estado') == "empty")){
-            $qry = $qry->where('name', 'LIKE', "%{$request->query('name')}%")
-                       ->where('email', 'LIKE', "%{$request->query('email')}%");
-        }
-
-        //Filtrar Nome e Tipo
-        if ($request->filled('name') && !$request->filled('email') && (request('tipo') != "empty") && (request('estado') == "empty")){
-            $qry = $qry->where('name', 'LIKE', "%{$request->query('name')}%")
-                       ->where('adm', $tipo);
-        }
-
-        //Filtrar Nome e Estado
-        if ($request->filled('name') && !$request->filled('email') && (request('tipo') == "empty") && (request('estado') != "empty")){
-            $qry = $qry->where('name', 'LIKE', "%{$request->query('name')}%")
-                       ->where('bloqueado', $estado);
-        }
-
-        //Filtrar Email e Tipo
-        if (!$request->filled('name') && $request->filled('email') && (request('tipo') != "empty") && (request('estado') == "empty")){
-            $qry = $qry->where('email', 'LIKE', "%{$request->query('email')}%")
-                       ->where('adm', $tipo);
-        }
-
-        //Filtrar Email e Estado
-        if (!$request->filled('name') && $request->filled('email') && (request('tipo') == "empty") && (request('estado') != "empty")){
-            $qry = $qry->where('email', 'LIKE', "%{$request->query('email')}%")
-                       ->where('bloqueado', $estado);
-                       
-        }
-
-        /*//Filtrar Estado e Tipo 
-        if (!$request->filled('name') && !$request->filled('email') && (request('tipo') != "empty") && (request('estado') != "empty")){
-            
-            $qry = $qry->where('adm', $tipo)
-                       ->where('bloqueado', $estado);
-                       
-        }*/
-
-        //Filtrar Nome, Email, Estado, e Tipo
-        if ($request->filled('name') && $request->filled('email') && (request('tipo') != "empty") && (request('estado') != "empty")){
-            $qry = $qry->where('name', 'LIKE', "%{$request->query('name')}%")
-                       ->where('email', 'LIKE', "%{$request->query('email')}%")
-                       ->where('bloqueado', $estado)
-                       ->where('adm', $tipo);
-                       
-        }
-
         $users = $qry->paginate(10);
+
+        
 
         return view('users.perfil')->withUsers($users)->withUser($user);
     }

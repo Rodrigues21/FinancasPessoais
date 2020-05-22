@@ -9,13 +9,13 @@
             <p><form action="{{route('perfis')}}" method="GET">
                  <div class="input-group">
                     
-                    <input name="name" placeholder="Nome" value="{{ old('name') }}">
-                    <input name="email" placeholder="Email" value="{{ old('email') }}">
+                    <input name="name" placeholder="Nome" value="{{ request()->input('name') }}">
+                    <input name="email" placeholder="Email" value="{{ request()->input('email') }}">
                     @if($user->adm)
                         <select class="custom-select" name="estado" id="estado">
                             <option value="empty">Escolher Bloqueado Ou Desbloqueado</option>
-                            <option value="1">Bloqueado</option>
-                            <option value="0">Desbloqueado</option>
+                            <option value="1" {{ request()->input('estado') === '1' ? 'selected' : '' }}>Bloqueado</option>
+                            <option value="0" {{ request()->input('estado') === '0' ? 'selected' : '' }}>Desbloqueado</option>
                         </select>
                         <select class="custom-select" name="tipo" id="tipo" placeholder="Tipo">
                             <option value="empty">Escolher Administrador Ou Utilizador</option>

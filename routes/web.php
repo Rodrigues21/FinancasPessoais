@@ -29,5 +29,11 @@ Route::post('perfis/block', 'UserController@manageblock')->name('perfis.block')-
 Route::post('perfis/promote', 'UserController@managepromote')->name('perfis.promote')->middleware('auth');
 
 Route::get('/contas', 'ContaController@index')->name('contas')->middleware('auth');
-Route::get('/contas/create', 'ContaController@create')->name('contas.create')->middleware('auth');
-Route::post('/contas/create', 'ContaController@store')->name('contas.store')->middleware('auth');
+Route::get('/conta/create', 'ContaController@create')->name('contas.create')->middleware('auth');
+Route::post('/conta/create', 'ContaController@store')->name('contas.store')->middleware('auth');
+
+Route::get('/contas/detalhes/{conta}', 'MovimentoController@movimentosConta')->name('contas.detalhes')->middleware('auth');
+Route::get('/contas/detalhes/{conta}/create', 'MovimentoController@create')->name('movimento.create')->middleware('auth');
+Route::post('/contas/detalhes/{conta}/create', 'MovimentoController@store')->name('movimento.store')->middleware('auth');
+Route::get('/movimentos/{movimento}/doc', 'MovimentoController@displayDoc')->name('movimentos.doc')->middleware('auth');
+ 

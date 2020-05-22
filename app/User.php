@@ -38,6 +38,6 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     public function contas(){
-        return $this->hasMany('App\Conta', 'user_id', 'id');
+        return $this->hasMany('App\Conta');
     }
 }
