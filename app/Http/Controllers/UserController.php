@@ -49,7 +49,9 @@ class UserController extends Controller
         }
 
         $user->save();
-        return redirect()->route('me');
+        return redirect()->route('me')
+                            ->with('alert-msg', 'Utilizador editado com sucesso!')
+                            ->with('alert-type', 'success');
    
     }
 
@@ -65,7 +67,9 @@ class UserController extends Controller
         $user = Auth::user();
         $user->password = Hash::make($request->input('password'));
         $user->save();
-        return redirect()->route('me');
+        return redirect()->route('me')
+                                ->with('alert-msg', 'Password alterada com sucesso!')
+                                ->with('alert-type', 'success');;
     }
 
     public function perfis(Request $request)

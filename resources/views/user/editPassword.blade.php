@@ -18,7 +18,7 @@
                             <div class="col-md-6">
                                 <input id="old_password" type="password" class="form-control{{ $errors->has('old_password') ? ' is-invalid' : '' }}" name="old_password" required>
 
-                                @error('password')
+                                @error('old_password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
