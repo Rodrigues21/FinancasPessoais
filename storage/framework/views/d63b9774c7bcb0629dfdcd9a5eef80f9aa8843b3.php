@@ -1,13 +1,5 @@
 
 
-<?php if(session('alert-msg')): ?>
- <div class="alert alert-<?php echo e(session('alert-type')); ?>">
- <span class="closebtn"
- onclick="this.parentElement.style.display='none';">&times;</span>
- <span><?php echo e(session('alert-msg')); ?></span>
- </div>
- <?php endif; ?>
-
 <?php $__env->startSection('content'); ?>
 
 <div class="col-lg-12 text-center">
@@ -58,5 +50,4 @@
 </div>
 
 <?php $__env->stopSection(); ?>
-
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\ainet\FinancasPessoais\resources\views/user/index.blade.php ENDPATH**/ ?>
