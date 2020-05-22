@@ -57,7 +57,7 @@
                             <label for="categoria_id" class="col-md-4 col-form-label text-md-right">{{ __('Categoria') }}</label>
                             <div class="col-md-6">
                                     <select name="categoria_id" id="inputType" class="form-control">
-                                        <option disabled selected> Escolha uma Opção </option>
+                                        <option  value="{{null}}"> Escolha uma Opção </option>
                                         @foreach ($categorias as $categoria):
                                             <option value="{{$categoria->id}}">{{$categoria->nome}}</option>
                                         @endforeach
