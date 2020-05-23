@@ -8,7 +8,7 @@
                 <div class="card-header"><?php echo e(__('Adicionar Movimento')); ?></div>
 
                 <div class="card-body">
-                    <form method="POST" action="<?php echo e(route('movimento.store', $conta->id)); ?>">
+                    <form method="POST" enctype="multipart/form-data" action="<?php echo e(route('movimento.store', $conta->id)); ?>">
                         <?php echo csrf_field(); ?>
                       
                         <div class="form-group row">
@@ -78,7 +78,7 @@ unset($__errorArgs, $__bag); ?>
                             <label for="categoria_id" class="col-md-4 col-form-label text-md-right"><?php echo e(__('Categoria')); ?></label>
                             <div class="col-md-6">
                                     <select name="categoria_id" id="inputType" class="form-control">
-                                        <option disabled selected> Escolha uma Opção </option>
+                                        <option  value="<?php echo e(null); ?>"> Escolha uma Opção </option>
                                         <?php $__currentLoopData = $categorias; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $categoria): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>:
                                             <option value="<?php echo e($categoria->id); ?>"><?php echo e($categoria->nome); ?></option>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -112,6 +112,36 @@ endif;
 unset($__errorArgs, $__bag); ?>" name="descricao" autocomplete="descricao" autofocus>
 
                                 <?php $__errorArgs = ['descricao'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong><?php echo e($message); ?></strong>
+                                    </span>
+                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="imagem_doc" class="col-md-4 col-form-label text-md-right"><?php echo e(__('Documento')); ?></label>
+                            <p style="color:white">....</p>
+
+                            <div class="col-md-5">
+                                <input id="imagem_doc" type="file" class="form-control <?php $__errorArgs = ['imagem_doc'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" name="imagem_doc">
+                                <label class="custom-file-label" for="imagem_doc">Escolha um Documento</label>
+
+                                <?php $__errorArgs = ['imagem_doc'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }

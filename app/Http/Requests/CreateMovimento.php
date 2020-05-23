@@ -29,6 +29,7 @@ class CreateMovimento extends FormRequest
             'tipo' => 'required',
             'categoria_id' => 'nullable',
             'descricao' => 'nullable|string|max:255',
+            'imagem_doc' => 'mimes:jpeg,jpg,png',
         ];
     }
 }

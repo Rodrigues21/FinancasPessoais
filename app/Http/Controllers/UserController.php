@@ -50,8 +50,8 @@ class UserController extends Controller
 
         $user->save();
         return redirect()->route('me')
-                            ->with('alert-msg', 'Utilizador editado com sucesso!')
-                            ->with('alert-type', 'success');
+        ->with('alert-msg', 'Utilizador editado com sucesso!')
+        ->with('alert-type', 'success');
    
     }
 

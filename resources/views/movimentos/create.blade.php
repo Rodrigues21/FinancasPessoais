@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Adicionar Movimento') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('movimento.store', $conta->id) }}">
+                    <form method="POST" enctype="multipart/form-data" action="{{ route('movimento.store', $conta->id) }}">
                         @csrf
                       
                         <div class="form-group row">
@@ -77,6 +77,22 @@
                                 <input id="descricao" type="text" class="form-control @error('descricao') is-invalid @enderror" name="descricao" autocomplete="descricao" autofocus>
 
                                 @error('descricao')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="imagem_doc" class="col-md-4 col-form-label text-md-right">{{ __('Documento') }}</label>
+                            <p style="color:white">....</p>
+
+                            <div class="col-md-5">
+                                <input id="imagem_doc" type="file" class="form-control @error('imagem_doc') is-invalid @enderror" name="imagem_doc">
+                                <label class="custom-file-label" for="imagem_doc">Escolha um Documento</label>
+
+                                @error('imagem_doc')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

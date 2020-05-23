@@ -87,10 +87,15 @@
 
         <main class="py-4">
             @if (session('alert-msg'))
+                <script>
+                    setTimeout(() => {
+                        const sessionAlert = document.getElementsByClassName("alert-{{ session('alert-type') }}")
+                        sessionAlert[0].style.display='none'
+                    }, 5000)
+                </script>
                 <div class="alert alert-{{ session('alert-type') }}">
-                <span class="closebtn"
-                onclick="this.parentElement.style.display='none';">&times;</span>
-                <span>{{ session('alert-msg') }}</span>
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    <span>{{ session('alert-msg') }}</span>
                 </div>
             @endif
             @yield('content')

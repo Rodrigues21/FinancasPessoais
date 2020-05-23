@@ -87,6 +87,18 @@
         </nav>
 
         <main class="py-4">
+            <?php if(session('alert-msg')): ?>
+                <script>
+                    setTimeout(() => {
+                        const sessionAlert = document.getElementsByClassName("alert-<?php echo e(session('alert-type')); ?>")
+                        sessionAlert[0].style.display='none'
+                    }, 5000)
+                </script>
+                <div class="alert alert-<?php echo e(session('alert-type')); ?>">
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    <span><?php echo e(session('alert-msg')); ?></span>
+                </div>
+            <?php endif; ?>
             <?php echo $__env->yieldContent('content'); ?>
         </main>
     </div>

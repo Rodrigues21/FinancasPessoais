@@ -45,8 +45,14 @@ class MovimentoController extends Controller
         $movimento->tipo = $userInput['tipo'];
         $movimento->conta_id = $conta->id;
 
-        if ($request->has('descricao')){
-            $movimento->descricao = $userInput['descricao'];
+       
+        $movimento->descricao = $userInput['descricao'] ?? null;
+        
+
+        
+
+        if ($request->hasFile('imagem_doc')){                         
+            $movimento->imagem_doc = basename($request->file('imagem_doc')->store('docs'));
         }
 
 
@@ -84,7 +90,9 @@ class MovimentoController extends Controller
         $conta->save();
         $movimento->save();
 
-        return redirect()->route('contas.detalhes', $conta->id);
+        return redirect()->route('contas.detalhes', $conta->id)
+        ->with('alert-msg', 'Movimento Editado Com Sucesso!')
+        ->with('alert-type', 'success');
     }
 
     public function displayDoc($id)
