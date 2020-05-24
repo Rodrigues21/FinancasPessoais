@@ -44,12 +44,7 @@ class MovimentoController extends Controller
         $movimento->categoria_id=$userInput['categoria_id'];
         $movimento->tipo = $userInput['tipo'];
         $movimento->conta_id = $conta->id;
-
-       
         $movimento->descricao = $userInput['descricao'] ?? null;
-        
-
-        
 
         if ($request->hasFile('imagem_doc')){                         
             $movimento->imagem_doc = basename($request->file('imagem_doc')->store('docs'));
@@ -91,7 +86,7 @@ class MovimentoController extends Controller
         $movimento->save();
 
         return redirect()->route('contas.detalhes', $conta->id)
-        ->with('alert-msg', 'Movimento Editado Com Sucesso!')
+        ->with('alert-msg', 'Movimento Criado Com Sucesso!')
         ->with('alert-type', 'success');
     }
 
@@ -142,6 +137,72 @@ class MovimentoController extends Controller
         ->with('alert-msg', 'Movimento Eliminado Com Sucesso!')
         ->with('alert-type', 'success');
 
+    }
+
+    public function edit(Movimento $movimento){
+        $conta = Conta::findOrFail($movimento->conta_id);
+        $categorias = Categoria::all();
+        return view('movimentos.edit')->withMovimento($movimento)->withCategorias($categorias)->withConta($conta);
+    }
+
+    public function update(CreateMovimento $request, Movimento $movimento){
+        $conta = Conta::findOrFail($movimento->conta_id);
+        $userInput = $request->validated();
+        $movimento->data=$userInput['data'];
+        $movimento->valor=$userInput['valor'];
+        $movimento->categoria_id=$userInput['categoria_id'];
+        $movimento->tipo = $userInput['tipo'];
+
+        if ($movimento->tipo == "D"){
+            $movimento->saldo_final = $movimento->saldo_inicial - $movimento->valor;
+        }else{
+            $movimento->saldo_final = $movimento->saldo_inicial + $movimento->valor;
+        }
+
+        $movimento->descricao = $userInput['descricao'] ?? null;
+
+        if ($request->hasFile('imagem_doc') && $movimento->imagem_doc =! null){ 
+            Storage::delete('docs/'. $movimento->imagem_doc);
+            $movimento->imagem_doc = basename($request->file('imagem_doc')->store('docs'));
+        } 
+
+        if (count($conta->movimentos()->where('data','<', $movimento->data)->get())>0){
+            $saldo_final_mov_anterior = $conta->movimentos()->orderBy('data', 'desc')->orderByDesc('id')->where('data', '<=', $movimento->data)->where('id', '!=', $movimento->id)->first()->saldo_final;
+           // dd($saldo_final_mov_anterior);
+            $movimento->saldo_inicial = $saldo_final_mov_anterior; 
+        }else{
+            $movimento->saldo_inicial= $conta->saldo_abertura;
+        }
+        if ($movimento->tipo == "D"){
+            $movimento->saldo_final = $movimento->saldo_inicial - $movimento->valor;
+        }else{
+            $movimento->saldo_final = $movimento->saldo_inicial + $movimento->valor;
+        }
+
+        $movimentos_seguintes = $conta->movimentos()->where('id', '!=', $movimento->id)->where('data','>', $movimento->data)->orderBy('data')->orderBy('id')->get();
+        $ultimo_saldo_final = $movimento->saldo_final;
+        foreach ($movimentos_seguintes as $movimento_seguinte){
+            $movimento_seguinte->saldo_inicial = $ultimo_saldo_final;
+            if ($movimento_seguinte->tipo == "D"){
+                $movimento_seguinte->saldo_final = $movimento_seguinte->saldo_inicial - $movimento_seguinte->valor;
+            }else{
+                $movimento_seguinte->saldo_final = $movimento_seguinte->saldo_inicial + $movimento_seguinte->valor;
+            }
+            $ultimo_saldo_final= $movimento_seguinte->saldo_final;
+            $movimento_seguinte->save();
+        }
+
+        $conta->saldo_atual = $ultimo_saldo_final;
+        if ($conta->data_ultimo_movimento < $movimento->data){
+            $conta->data_ultimo_movimento  = $movimento->data;
+        }
+
+        $conta->save();
+        $movimento->save();
+
+        return redirect()->route('contas.detalhes', $conta->id)
+        ->with('alert-msg', 'Movimento Editado Com Sucesso!')
+        ->with('alert-type', 'success');
     }
 
 

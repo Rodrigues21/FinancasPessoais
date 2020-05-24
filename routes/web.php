@@ -38,3 +38,5 @@ Route::post('/contas/detalhes/{conta}/create', 'MovimentoController@store')->nam
 Route::get('/movimentos/{movimento}/doc', 'MovimentoController@displayDoc')->name('movimentos.doc')->middleware('auth');
 Route::delete('/movimentos/{movimento}', 'MovimentoController@destroy')->name('movimento.destroy')->middleware('auth');
 
+Route::get('/movimentos/{movimento}/edit', 'MovimentoController@edit')->name('movimento.edit')->middleware('auth');
+Route::post('/movimentos/{movimento}/edit', 'MovimentoController@update')->name('movimento.update')->middleware('auth');

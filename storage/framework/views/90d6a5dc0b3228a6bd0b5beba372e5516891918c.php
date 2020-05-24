@@ -36,16 +36,11 @@
                             <td><?php echo e($mov->categoria->nome ?? ''); ?></td>
                             <td><?php echo e($mov->tipo == 'D' ? 'Despesa' : 'Receita'); ?></td>
                             <td style="width:13.4%">  
-                                <div class="btn-group" >
-                                    
-                                    
-    
-                                    <div class="column" style= "margin-right: 5px;  margin-top: 5px;" > 
-                                        <form action="#" method="GET">
-                                            <input name="id_conta" type="hidden" value="<?php echo e($conta->id); ?>">
-                                            <button type="submit" class="btn btn-secondary"><span class="fa fa-pencil"></span></a></button>                              
-                                        </form> 
-                                    </div> 
+                                <div class="btn-group" >            
+
+                                    <div class="column" style= "margin-right: 5px;  margin-top: 5px;">                                
+                                        <a  href="<?php echo e(route('movimento.edit', $mov)); ?>" class="btn btn-secondary" role="button" aria-pressed="true" ><span class="fa fa-pencil"></a>                                    
+                                    </div>
     
                                     <div class="column" style= "margin-right: 5px;  margin-top: 5px;"> 
                                         <form action="<?php echo e(route('movimento.destroy', $mov)); ?>" method="POST">
