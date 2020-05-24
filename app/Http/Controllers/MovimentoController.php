@@ -9,12 +9,17 @@ use App\Categoria;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\CreateMovimento;
+use Illuminate\Support\Facades\Auth;
 
 class MovimentoController extends Controller
 {
     public function movimentosConta($id){
-        
+
         $conta = DB::table('contas')->where('id', $id)->first();
+        if($conta->user_id != Auth::user()->id){
+            return response(view('erros.autorizacao'), 403);
+        }
+
         $qry = Movimento::query();
         $qry = $qry->where('conta_id', $id)->orderByDesc('data')->orderByDesc('id');
         $movimentos = $qry->paginate(10);
@@ -23,6 +28,8 @@ class MovimentoController extends Controller
     }
 
     public function detalheMovimentos($id){
+       
+        
         $movimento = DB::table('movimentos')->where('id', $id)->first();
         
         return view('movimentos.detalhe')->withMovimento($movimento)->withUrl($url);
@@ -30,6 +37,10 @@ class MovimentoController extends Controller
 
     public function create($id){
         $conta = DB::table('contas')->where('id', $id)->first();
+        if($conta->user_id != Auth::user()->id){
+            return response(view('erros.autorizacao'), 403);
+        }
+
         $categorias = Categoria::all();
         return view('movimentos.create')->withConta($conta)->withCategorias($categorias);
     }
@@ -37,6 +48,10 @@ class MovimentoController extends Controller
     public function store(CreateMovimento $request, $id) {
         
         $conta = Conta::findOrFail($id);
+        if($conta->user_id != Auth::user()->id){
+            return response(view('erros.autorizacao'), 403);
+        }
+
         $userInput = $request->validated();
         $movimento = new Movimento();
         $movimento->data=$userInput['data'];
@@ -103,6 +118,10 @@ class MovimentoController extends Controller
     public function destroy(Movimento $movimento)
     {
         $conta = Conta::findOrFail($movimento->conta_id);
+        if($conta->user_id != Auth::user()->id){
+            return response(view('erros.autorizacao'), 403);
+        }
+
         Storage::delete('docs/'. $movimento->imagem_doc);
         $data = $movimento->data;
         $movimento->delete();
@@ -141,12 +160,18 @@ class MovimentoController extends Controller
 
     public function edit(Movimento $movimento){
         $conta = Conta::findOrFail($movimento->conta_id);
+        if($conta->user_id != Auth::user()->id){
+            return response(view('erros.autorizacao'), 403);
+        }
         $categorias = Categoria::all();
         return view('movimentos.edit')->withMovimento($movimento)->withCategorias($categorias)->withConta($conta);
     }
 
     public function update(CreateMovimento $request, Movimento $movimento){
         $conta = Conta::findOrFail($movimento->conta_id);
+        if($conta->user_id != Auth::user()->id){
+            return response(view('erros.autorizacao'), 403);
+        }
         $userInput = $request->validated();
         $movimento->data=$userInput['data'];
         $movimento->valor=$userInput['valor'];
@@ -168,7 +193,7 @@ class MovimentoController extends Controller
 
         if (count($conta->movimentos()->where('data','<', $movimento->data)->get())>0){
             $saldo_final_mov_anterior = $conta->movimentos()->orderBy('data', 'desc')->orderByDesc('id')->where('data', '<=', $movimento->data)->where('id', '!=', $movimento->id)->first()->saldo_final;
-           // dd($saldo_final_mov_anterior);
+           
             $movimento->saldo_inicial = $saldo_final_mov_anterior; 
         }else{
             $movimento->saldo_inicial= $conta->saldo_abertura;
