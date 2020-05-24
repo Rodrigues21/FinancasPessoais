@@ -105,6 +105,47 @@ class MovimentoController extends Controller
         }
     }
 
+    public function destroy(Movimento $movimento)
+    {
+        $conta = Conta::findOrFail($movimento->conta_id);
+        Storage::delete('docs/'. $movimento->imagem_doc);
+        $data = $movimento->data;
+        $movimento->delete();
+
+       
+
+        if (count($conta->movimentos()->where('data','<', $movimento->data)->get())>0){
+            $saldo_final_mov_anterior = $conta->movimentos()->orderBy('data', 'desc')->orderByDesc('id')->where('data', '<=', $movimento->data)->first()->saldo_final;
+        }else{
+            $saldo_final_mov_anterior = $conta->saldo_abertura;
+        }
+
+        $movimentos_seguintes = $conta->movimentos()->where('data','>', $data)->orderBy('data')->orderBy('id')->get();
+        foreach ($movimentos_seguintes as $movimento_seguinte){
+            $movimento_seguinte->saldo_inicial =  $saldo_final_mov_anterior;
+            if ($movimento_seguinte->tipo ="D"){
+                $movimento_seguinte->saldo_final = $movimento_seguinte->saldo_inicial - $movimento_seguinte->valor;
+            }else{
+                $movimento_seguinte->saldo_final = $movimento_seguinte->saldo_inicial + $movimento_seguinte->valor;
+            }
+            $movimento_seguinte->save();
+            $saldo_final_mov_anterior = $movimento_seguinte->saldo_final;
+        }
+        $conta->saldo_atual =  $saldo_final_mov_anterior;
+
+        $ultimoMov = Movimento::where('conta_id', $conta->id)->orderBy('data')->orderBy('id')->get()->reverse(true)->first();
+
+        $conta->data_ultimo_movimento = $ultimoMov->data ?? null;
+        $conta->save();
+
+        return redirect()->route('contas.detalhes', $conta->id)
+        ->with('alert-msg', 'Movimento Eliminado Com Sucesso!')
+        ->with('alert-type', 'success');
+
+    }
+
+
+
     
 
 

@@ -9,7 +9,7 @@ class Movimento extends Model
     public $timestamps=false;
 
     protected $fillable = [
-        'nome', 'saldo_abertura', 'descricao'
+        'conta_id', 'data', 'valor', 'saldo_inicial_', 'saldo_final', 'tipo', 'categoria_id', 'descricao', 'imagem_doc'
     ];
 
     public function conta()

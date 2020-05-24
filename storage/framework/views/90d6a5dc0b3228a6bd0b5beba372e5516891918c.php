@@ -48,8 +48,11 @@
                                     </div> 
     
                                     <div class="column" style= "margin-right: 5px;  margin-top: 5px;"> 
-                                        <form action="#" method="GET">
-                                            <input name="id_conta" type="hidden" value="<?php echo e($conta->id); ?>">
+                                        <form action="<?php echo e(route('movimento.destroy', $mov)); ?>" method="POST">
+
+                                            <?php echo csrf_field(); ?>
+                                            <?php echo method_field('delete'); ?>
+
                                             <button type="submit" class="btn btn-danger"><span class="fa fa-trash-o"></span></a></button>                              
                                         </form> 
                                     </div> 
