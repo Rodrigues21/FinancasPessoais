@@ -12,6 +12,33 @@
             <div class="column" style= "margin-right: 5px;  margin-bottom: 5px;">                                
             <a  href="<?php echo e(route('movimento.create', $conta->id)); ?>" class="btn btn-success " role="button" aria-pressed="true" >Adicionar Movimento</a>                                    
             </div>
+            <p><form action="<?php echo e(route('contas.detalhes', $conta->id)); ?>" method="GET">
+                <div class="input-group">
+                   
+                   
+                   <input type="date" name="data" class="form-control" id="data" placeholder="Data" value="<?php echo e(request()->input('data')); ?>">
+                   <select name="tipo" id="inputType" class="form-control">
+                        <option value="empty"> Escolha uma Opção </option>
+                        <option value="D"  <?php echo e(request()->input('tipo') === 'D' ? 'selected' : ''); ?>>Despesa</option>
+                        <option value="R"  <?php echo e(request()->input('tipo') === 'R' ? 'selected' : ''); ?>>Receita</option>
+                    </select>
+
+                    <select name="categoria_id" id="inputType" class="form-control">
+                        <option  value="empty"> Escolha uma Opção </option>
+                        <?php $__currentLoopData = $categorias; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $categoria): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>:
+                            <option value="<?php echo e($categoria->id); ?>" <?php echo e(request()->input('categoria_id') === $categoria->id ? 'selected' : ''); ?>><?php echo e($categoria->nome); ?></option>
+ 
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </select>
+                  
+               
+                           
+       
+                   <div class="input-group-append">
+                       <button class="btn btn-outline-secondary" type="submit">Filtrar</button>
+                   </div> 
+               </div> 
+           </form></p>
             <table class="table table-striped table-bordered">
                 <thead >
                     <tr>

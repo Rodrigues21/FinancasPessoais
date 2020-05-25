@@ -22,7 +22,7 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" name="nome" required autocomplete="nome" autofocus>
+unset($__errorArgs, $__bag); ?>" name="nome" required autocomplete="nome" autofocus value="<?php echo e(old('nome')); ?>">
 
                                 <?php $__errorArgs = ['nome'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -50,7 +50,7 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" name="descricao" autocomplete="descricao" autofocus>
+unset($__errorArgs, $__bag); ?>" name="descricao" autocomplete="descricao" autofocus value="<?php echo e(old('descricao')); ?>">
 
                                 <?php $__errorArgs = ['descricao'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -78,7 +78,7 @@ if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>" name="saldo_abertura" autocomplete="saldo_abertura" autofocus>
+unset($__errorArgs, $__bag); ?>" name="saldo_abertura" autocomplete="saldo_abertura" autofocus value="<?php echo e(old('saldo_abertura')); ?>">
 
                                 <?php $__errorArgs = ['saldo_abertura'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -94,16 +94,6 @@ endif;
 unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
-
-                        
-
-                        
-
-
-                        
-                        
-
-                        
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">

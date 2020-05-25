@@ -103,7 +103,7 @@
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-success">
-                                    {{ __('Criar') }}
+                                    {{ __('Editarr') }}
                                 </button>
                                 <a class="btn btn-danger " href="{{route('contas.detalhes', $conta->id)}}">Cancelar</a>
                             </div>

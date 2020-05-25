@@ -30,14 +30,11 @@
                                 <div class="column" style= "margin-right: 5px;  margin-top: 5px;"> 
                                     <a  href="{{ route('contas.detalhes', $conta->id) }}" class="btn btn-primary" role="button" aria-pressed="true"><span class="fa fa-search"></span></a>
                                 </div> 
-                                
-                                <div class="column" style= "margin-right: 5px;  margin-top: 5px;"> 
-                                    <form action="#" method="GET">
-                                        <input name="id_conta" type="hidden" value="{{$conta->id}}">
-                                        <button type="submit" class="btn btn-secondary"><span class="fa fa-pencil"></span></a></button>                              
-                                    </form> 
-                                </div> 
 
+                                <div class="column" style= "margin-right: 5px;  margin-top: 5px;"> 
+                                    <a  href="{{ route('contas.edit', $conta) }}" class="btn btn-secondary" role="button" aria-pressed="true"><span class="fa fa-pencil"></span></a>
+                                </div> 
+                                                                
                                 <div class="column" style= "margin-right: 5px;  margin-top: 5px;"> 
                                     <form action="#" method="GET">
                                         <input name="id_conta" type="hidden" value="{{$conta->id}}">

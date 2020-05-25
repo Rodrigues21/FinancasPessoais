@@ -12,6 +12,33 @@
             <div class="column" style= "margin-right: 5px;  margin-bottom: 5px;">                                
             <a  href="{{ route('movimento.create', $conta->id)}}" class="btn btn-success " role="button" aria-pressed="true" >Adicionar Movimento</a>                                    
             </div>
+            <p><form action="{{route('contas.detalhes', $conta->id)}}" method="GET">
+                <div class="input-group">
+                   
+                   
+                   <input type="date" name="data" class="form-control" id="data" placeholder="Data" value="{{ request()->input('data') }}">
+                   <select name="tipo" id="inputType" class="form-control">
+                        <option value="empty"> Escolha uma Opção </option>
+                        <option value="D"  {{ request()->input('tipo') === 'D' ? 'selected' : '' }}>Despesa</option>
+                        <option value="R"  {{ request()->input('tipo') === 'R' ? 'selected' : '' }}>Receita</option>
+                    </select>
+
+                    <select name="categoria_id" id="inputType" class="form-control">
+                        <option  value="empty"> Escolha uma Opção </option>
+                        @foreach ($categorias as $categoria):
+                            <option value="{{$categoria->id}}" {{ request()->input('categoria_id') === $categoria->id ? 'selected' : ''}}>{{$categoria->nome}}</option>
+ 
+                        @endforeach
+                    </select>
+                  
+               
+                           
+       
+                   <div class="input-group-append">
+                       <button class="btn btn-outline-secondary" type="submit">Filtrar</button>
+                   </div> 
+               </div> 
+           </form></p>
             <table class="table table-striped table-bordered">
                 <thead >
                     <tr>

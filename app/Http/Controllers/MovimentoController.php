@@ -13,27 +13,41 @@ use Illuminate\Support\Facades\Auth;
 
 class MovimentoController extends Controller
 {
-    public function movimentosConta($id){
+    public function movimentosConta(Request $request, $id){
 
         $conta = DB::table('contas')->where('id', $id)->first();
+        
         if($conta->user_id != Auth::user()->id){
             return response(view('erros.autorizacao'), 403);
         }
 
+        $categorias = Categoria::all();
+        $categoria_id = request('categoria_id');
+        $tipo = request('tipo');
+        $data = request('data');
+
         $qry = Movimento::query();
+
+       //Filtrar dara
+        if ($request->filled('data') ){
+            $qry = $qry->where('conta_id', $id)->where('data', $data)->orderByDesc('data')->orderByDesc('id');
+        }
+
+        if (isset($request->tipo) && $request->tipo != "empty"){
+            $qry = $qry->where('conta_id', $id)->where('tipo', $tipo)->orderByDesc('data')->orderByDesc('id');
+        }
+
+        if (isset($request->categoria_id) && $request->categoria_id != "empty"){
+            $qry = $qry->where('conta_id', $id)->where('categoria_id', $categoria_id)->orderByDesc('data')->orderByDesc('id');
+        }
+
         $qry = $qry->where('conta_id', $id)->orderByDesc('data')->orderByDesc('id');
         $movimentos = $qry->paginate(10);
         
-        return view('contas.detalhe')->withMovimentos($movimentos)->withConta($conta);
+        return view('contas.detalhe')->withMovimentos($movimentos)->withConta($conta)->withCategorias($categorias);
     }
 
-    public function detalheMovimentos($id){
-       
-        
-        $movimento = DB::table('movimentos')->where('id', $id)->first();
-        
-        return view('movimentos.detalhe')->withMovimento($movimento)->withUrl($url);
-    }
+    
 
     public function create($id){
         $conta = DB::table('contas')->where('id', $id)->first();
