@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('content'); ?>
 <div class="container">
     <div class="row justify-content-center">
@@ -10,7 +8,17 @@
                 <div class="card-body">
                     <form method="POST" enctype="multipart/form-data" action="<?php echo e(route('movimento.store', $conta->id)); ?>">
                         <?php echo csrf_field(); ?>
-                      
+
+                        <?php if($errors->any()): ?>
+                            <div class="alert alert-danger">
+                                <ul>
+                                    <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <li><?php echo e($error); ?></li>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </ul>
+                            </div>
+                        <?php endif; ?>
+
                         <div class="form-group row">
                             <label for="data" class="col-md-4 col-form-label text-md-right"><?php echo e(__('Data')); ?></label>
                             <div class="col-md-6">
@@ -54,10 +62,10 @@ unset($__errorArgs, $__bag); ?>
                             <div class="col-md-6">
                                     <select name="tipo" id="inputType" class="form-control">
                                         <option disabled selected> Escolha uma Opção </option>
-                                        
+
                                         <option value="D">Despesa</option>
                                         <option value="R">Receita</option>
-                                       
+
                                     </select>
                                     <?php $__errorArgs = ['tipo'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
@@ -172,4 +180,5 @@ unset($__errorArgs, $__bag); ?>
     </div>
 </div>
 <?php $__env->stopSection(); ?>
+
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\ainet\FinancasPessoais\resources\views/movimentos/create.blade.php ENDPATH**/ ?>

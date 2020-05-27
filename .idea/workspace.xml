@@ -2,7 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="62554d2b-a948-4e37-aeba-f510bdd2c05f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/storage/framework/sessions/ggHlfzgsLZHygxDfvf8RecYs7tctzYVp7MlwZPcG" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Conta.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Conta.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ContaController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ContaController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/MovimentoController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/MovimentoController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/CreateMovimento.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/CreateMovimento.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Movimento.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Movimento.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/contas/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/contas/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/movimentos/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/movimentos/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/framework/views/53341a6a167f7eb12c57efae5c2e75d976152c51.php" beforeDir="false" afterPath="$PROJECT_DIR$/storage/framework/views/53341a6a167f7eb12c57efae5c2e75d976152c51.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/framework/views/7f7463eefa36c0b144b930a0dadeddf4bfa39c3f.php" beforeDir="false" afterPath="$PROJECT_DIR$/storage/framework/views/7f7463eefa36c0b144b930a0dadeddf4bfa39c3f.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/logs/laravel.log" beforeDir="false" afterPath="$PROJECT_DIR$/storage/logs/laravel.log" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -154,6 +165,7 @@
       <workItem from="1588884074845" duration="2239000" />
       <workItem from="1590177193393" duration="13000" />
       <workItem from="1590177207793" duration="678000" />
+      <workItem from="1590527165508" duration="1959000" />
     </task>
     <servers />
   </component>

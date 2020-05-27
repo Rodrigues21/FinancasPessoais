@@ -10,7 +10,7 @@
         <p>Saldo Abertura: {{$conta->saldo_abertura}}€</p>
         <p>Saldo Atual: {{$conta->saldo_atual}}€</p>
             <div class="column" style= "margin-right: 5px;  margin-bottom: 5px;">                                
-            <a  href="{{ route('movimento.create', $conta->id)}}" class="btn btn-success " role="button" aria-pressed="true" >Adicionar Movimento</a>                                    
+            <a  href="{{ route('movimento.create', $conta->id)}}" class="btn btn-success " title="Adicionar Movimento" role="button" aria-pressed="true" ><span class="fa fa-plus"></a>                                    
             </div>
             <p><form action="{{route('contas.detalhes', $conta->id)}}" method="GET">
                 <div class="input-group">
@@ -66,7 +66,7 @@
                                 <div class="btn-group" >            
 
                                     <div class="column" style= "margin-right: 5px;  margin-top: 5px;">                                
-                                        <a  href="{{ route('movimento.edit', $mov) }}" class="btn btn-secondary" role="button" aria-pressed="true" ><span class="fa fa-pencil"></a>                                    
+                                        <a  href="{{ route('movimento.edit', $mov) }}" title="Editar Movimento" class="btn btn-secondary" role="button" aria-pressed="true" ><span class="fa fa-pencil"></a>                                    
                                     </div>
     
                                     <div class="column" style= "margin-right: 5px;  margin-top: 5px;"> 
@@ -75,13 +75,13 @@
                                             @csrf
                                             @method('delete')
 
-                                            <button type="submit" class="btn btn-danger"><span class="fa fa-trash-o"></span></a></button>                              
+                                            <button type="submit" title="Apagar Movimento" class="btn btn-danger"><span class="fa fa-trash-o"></span></a></button>                              
                                         </form> 
                                     </div> 
 
                                     @if($mov->descricao != null || $mov->imagem_doc != null)
                                         <div class="column" style= "margin-right: 5px;  margin-top: 5px;">                                     
-                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal-{{$mov->id}}">
+                                        <button type="button" title="Detalhes do Movimento"class="btn btn-primary" data-toggle="modal" data-target="#exampleModal-{{$mov->id}}">
                                             <span class="fa fa-search"></span>
                                         </button>
                                         </div>

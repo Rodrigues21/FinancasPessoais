@@ -10,7 +10,17 @@
                 <div class="card-body">
                     <form method="POST" enctype="multipart/form-data" action="{{ route('movimento.store', $conta->id) }}">
                         @csrf
-                      
+
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
                         <div class="form-group row">
                             <label for="data" class="col-md-4 col-form-label text-md-right">{{ __('Data') }}</label>
                             <div class="col-md-6">
@@ -40,10 +50,10 @@
                             <div class="col-md-6">
                                     <select name="tipo" id="inputType" class="form-control">
                                         <option disabled selected> Escolha uma Opção </option>
-                                        
+
                                         <option value="D">Despesa</option>
                                         <option value="R">Receita</option>
-                                       
+
                                     </select>
                                     @error('tipo')
                                         <span class="invalid-feedback" role="alert">

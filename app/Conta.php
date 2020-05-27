@@ -3,10 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Conta extends Model
 {
-    public $timestamps=false;
+    use SoftDeletes;
+
+    public $timestamps=false;    
 
     protected $fillable = [
         'nome', 'saldo_abertura', 'descricao'

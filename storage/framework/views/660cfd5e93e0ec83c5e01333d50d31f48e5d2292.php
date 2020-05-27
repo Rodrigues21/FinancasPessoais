@@ -72,9 +72,9 @@
                                                 <?php echo csrf_field(); ?>
                                                 <input name="block_promote" type="hidden" value="<?php echo e($u->id); ?>">
                                                 <?php if($u->adm): ?>
-                                                    <button type="submit" class="btn btn-danger "><span class="fa fa-arrow-down"></span></button>
+                                                    <button type="submit" title= "Despromover" class="btn btn-danger "><span class="fa fa-arrow-down"></span></button>
                                                 <?php else: ?>
-                                                    <button type="submit" class="btn btn-success"><span class="fa fa-arrow-up"></span></button>
+                                                    <button type="submit" title= "Promover" class="btn btn-success"><span class="fa fa-arrow-up"></span></button>
                                                 <?php endif; ?>
                                                 
                                             </form> 
@@ -85,9 +85,9 @@
                                                 <?php echo csrf_field(); ?>
                                                 <input name="block_user" type="hidden" value="<?php echo e($u->id); ?>">
                                                 <?php if($u->bloqueado): ?>
-                                                    <button type="submit" class="btn btn-success"><span class="fa fa-unlock"></span></button>
+                                                    <button type="submit" title= "Desbloquear" class="btn btn-success"><span class="fa fa-unlock"></span></button>
                                                 <?php else: ?>
-                                                    <button type="submit" class="btn btn-danger"><span class="fa fa-lock"></span></button>
+                                                    <button type="submit" title= "Bloquear" class="btn btn-danger"><span class="fa fa-lock"></span></button>
                                                 <?php endif; ?>
                                                 
                                             </form> 

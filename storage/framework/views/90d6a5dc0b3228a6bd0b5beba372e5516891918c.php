@@ -10,7 +10,7 @@
         <p>Saldo Abertura: <?php echo e($conta->saldo_abertura); ?>€</p>
         <p>Saldo Atual: <?php echo e($conta->saldo_atual); ?>€</p>
             <div class="column" style= "margin-right: 5px;  margin-bottom: 5px;">                                
-            <a  href="<?php echo e(route('movimento.create', $conta->id)); ?>" class="btn btn-success " role="button" aria-pressed="true" >Adicionar Movimento</a>                                    
+            <a  href="<?php echo e(route('movimento.create', $conta->id)); ?>" class="btn btn-success " title="Adicionar Movimento" role="button" aria-pressed="true" ><span class="fa fa-plus"></a>                                    
             </div>
             <p><form action="<?php echo e(route('contas.detalhes', $conta->id)); ?>" method="GET">
                 <div class="input-group">
@@ -66,7 +66,7 @@
                                 <div class="btn-group" >            
 
                                     <div class="column" style= "margin-right: 5px;  margin-top: 5px;">                                
-                                        <a  href="<?php echo e(route('movimento.edit', $mov)); ?>" class="btn btn-secondary" role="button" aria-pressed="true" ><span class="fa fa-pencil"></a>                                    
+                                        <a  href="<?php echo e(route('movimento.edit', $mov)); ?>" title="Editar Movimento" class="btn btn-secondary" role="button" aria-pressed="true" ><span class="fa fa-pencil"></a>                                    
                                     </div>
     
                                     <div class="column" style= "margin-right: 5px;  margin-top: 5px;"> 
@@ -75,13 +75,13 @@
                                             <?php echo csrf_field(); ?>
                                             <?php echo method_field('delete'); ?>
 
-                                            <button type="submit" class="btn btn-danger"><span class="fa fa-trash-o"></span></a></button>                              
+                                            <button type="submit" title="Apagar Movimento" class="btn btn-danger"><span class="fa fa-trash-o"></span></a></button>                              
                                         </form> 
                                     </div> 
 
                                     <?php if($mov->descricao != null || $mov->imagem_doc != null): ?>
                                         <div class="column" style= "margin-right: 5px;  margin-top: 5px;">                                     
-                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal-<?php echo e($mov->id); ?>">
+                                        <button type="button" title="Detalhes do Movimento"class="btn btn-primary" data-toggle="modal" data-target="#exampleModal-<?php echo e($mov->id); ?>">
                                             <span class="fa fa-search"></span>
                                         </button>
                                         </div>

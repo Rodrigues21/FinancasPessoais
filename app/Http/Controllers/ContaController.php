@@ -16,10 +16,17 @@ class ContaController extends Controller
     public function index()
     {
         //$contas = Conta::where('user_id', $id)->paginate(5);
-
         $user = Auth::user();
         $qry = Conta::query();
-        $qry = $qry->where('user_id', $user->id);
+        if(request()->get('apagadas') == null){   
+
+            $qry = $qry->where('user_id', $user->id);
+
+        } else {
+
+            $qry = $qry->withTrashed()->where('user_id', $user->id);
+        }
+
         $contas = $qry->paginate(10);
 
         return view('contas.index')->withContas($contas);    
@@ -39,7 +46,7 @@ class ContaController extends Controller
         $conta->saldo_atual=$conta->saldo_abertura;
         $conta->save();
 
-        return redirect()->route('contas', Auth::user()->id)
+        return redirect()->route('contas')
         ->with('alert-msg', 'Conta criada Com Sucesso!')
         ->with('alert-type', 'success');
     }
@@ -97,13 +104,53 @@ class ContaController extends Controller
         $conta->save();
 
 
-        return redirect()->route('contas', Auth::user()->id)
+        return redirect()->route('contas')
         ->with('alert-msg', 'Conta Editada Com Sucesso!')
         ->with('alert-type', 'success');
 
     }
 
-    
+    public function delete($conta){
 
+        $conta = Conta::find($conta);
+
+        $conta->movimentos->each(function ($movimento, $key) {
+            $movimento->delete();
+        });
+        
+        $conta->delete();        
+
+        return redirect()->route('contas')
+        ->with('alert-msg', 'Conta eliminada Com Sucesso!')
+        ->with('alert-type', 'success');
+
+    }  
     
+    public function forcedelete($conta){
+
+        $conta = Conta::withTrashed()->find($conta);
+
+        DB::table('movimentos')->where('conta_id',$conta->id)->delete();
+
+        $conta->forcedelete();       
+
+        return redirect()->route('contas')
+        ->with('alert-msg', 'Conta eliminada Com Sucesso!')
+        ->with('alert-type', 'success');
+
+    }   
+
+    public function activate($conta){
+        
+        $conta = Conta::withTrashed()->find($conta);
+        $conta->deleted_at = null;
+        $conta->save();
+
+        DB::table('movimentos')->where('conta_id',$conta->id)->update(['deleted_at' => null]);
+
+        return redirect()->route('contas')
+        ->with('alert-msg', 'Conta ativada Com Sucesso!')
+        ->with('alert-type', 'success');
+    }
+
 }

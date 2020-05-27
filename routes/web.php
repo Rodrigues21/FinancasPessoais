@@ -33,7 +33,9 @@ Route::get('/contas/create', 'ContaController@create')->name('contas.create')->m
 Route::post('/contas/create', 'ContaController@store')->name('contas.store')->middleware('auth');
 Route::get('/contas/{conta}/edit', 'ContaController@edit')->name('contas.edit')->middleware('auth');
 Route::post('/contas/{conta}/edit', 'ContaController@update')->name('contas.update')->middleware('auth');
-
+Route::get('/contas/{conta}/delete', 'ContaController@delete')->name('contas.delete')->middleware('auth');
+Route::get('/contas/{conta}/forcedelete', 'ContaController@forcedelete')->name('contas.forcedelete')->middleware('auth');
+Route::get('/contas/{conta}/activate', 'ContaController@activate')->name('contas.activate')->middleware('auth');
 
 Route::get('/contas/detalhes/{conta}', 'MovimentoController@movimentosConta')->name('contas.detalhes')->middleware('auth');
 Route::get('/contas/detalhes/{conta}/create', 'MovimentoController@create')->name('movimento.create')->middleware('auth');

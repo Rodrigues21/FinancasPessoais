@@ -72,9 +72,9 @@
                                                 @csrf
                                                 <input name="block_promote" type="hidden" value="{{$u->id}}">
                                                 @if($u->adm)
-                                                    <button type="submit" class="btn btn-danger "><span class="fa fa-arrow-down"></span></button>
+                                                    <button type="submit" title= "Despromover" class="btn btn-danger "><span class="fa fa-arrow-down"></span></button>
                                                 @else
-                                                    <button type="submit" class="btn btn-success"><span class="fa fa-arrow-up"></span></button>
+                                                    <button type="submit" title= "Promover" class="btn btn-success"><span class="fa fa-arrow-up"></span></button>
                                                 @endif
                                                 
                                             </form> 
@@ -85,9 +85,9 @@
                                                 @csrf
                                                 <input name="block_user" type="hidden" value="{{$u->id}}">
                                                 @if($u->bloqueado)
-                                                    <button type="submit" class="btn btn-success"><span class="fa fa-unlock"></span></button>
+                                                    <button type="submit" title= "Desbloquear" class="btn btn-success"><span class="fa fa-unlock"></span></button>
                                                 @else
-                                                    <button type="submit" class="btn btn-danger"><span class="fa fa-lock"></span></button>
+                                                    <button type="submit" title= "Bloquear" class="btn btn-danger"><span class="fa fa-lock"></span></button>
                                                 @endif
                                                 
                                             </form> 

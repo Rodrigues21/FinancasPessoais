@@ -37,15 +37,15 @@
     <div class="row justify-content-center">
         <div class="d-flex flex-row" >
             <div class="column" style= "margin-right: 5px; margin-top: 5px;" >
-                <a  href="{{ route('me.edit') }}" class="btn btn-primary" role="button" aria-pressed="true">Editar Perfil</a>                              
+                <a  href="{{ route('me.edit') }}" class="btn btn-primary" title="Editar Perfil" role="button" aria-pressed="true"><span class="fa fa-pencil"></a>                              
             </div>
 
             <div class="column" style= "margin-right: 5px;  margin-top: 5px;">                                
-                <a  href="{{ route('me.edit.password') }}" class="btn btn-primary" role="button" aria-pressed="true" >Alterar Password</a>                                    
+                <a  href="{{ route('me.edit.password') }}" class="btn btn-primary" title="Alterar Password" role="button" aria-pressed="true" ><span class="fa fa-key"></a>                                    
             </div>
 
             <div class="column" style= "margin-right: 5px;  margin-top: 5px;">                                
-                <a  href="#" class="btn btn-danger" role="button" aria-pressed="true" >Apagar Conta</a>                                    
+                <a  href="#" class="btn btn-danger" title = "Apagar Conta" role="button" aria-pressed="true" ><span class="fa fa-trash-o"></a>                                    
             </div>
         </div>
     </div>

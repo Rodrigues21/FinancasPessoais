@@ -16,7 +16,7 @@ class MovimentoController extends Controller
     public function movimentosConta(Request $request, $id){
 
         $conta = DB::table('contas')->where('id', $id)->first();
-        
+
         if($conta->user_id != Auth::user()->id){
             return response(view('erros.autorizacao'), 403);
         }
@@ -30,24 +30,24 @@ class MovimentoController extends Controller
 
        //Filtrar dara
         if ($request->filled('data') ){
-            $qry = $qry->where('conta_id', $id)->where('data', $data)->orderByDesc('data')->orderByDesc('id');
+            $qry = $qry->withTrashed()->where('conta_id', $id)->where('data', $data)->orderByDesc('data')->orderByDesc('id');
         }
 
         if (isset($request->tipo) && $request->tipo != "empty"){
-            $qry = $qry->where('conta_id', $id)->where('tipo', $tipo)->orderByDesc('data')->orderByDesc('id');
+            $qry = $qry->withTrashed()->where('conta_id', $id)->where('tipo', $tipo)->orderByDesc('data')->orderByDesc('id');
         }
 
         if (isset($request->categoria_id) && $request->categoria_id != "empty"){
-            $qry = $qry->where('conta_id', $id)->where('categoria_id', $categoria_id)->orderByDesc('data')->orderByDesc('id');
+            $qry = $qry->withTrashed()->where('conta_id', $id)->where('categoria_id', $categoria_id)->orderByDesc('data')->orderByDesc('id');
         }
 
-        $qry = $qry->where('conta_id', $id)->orderByDesc('data')->orderByDesc('id');
+        $qry = $qry->withTrashed()->where('conta_id', $id)->orderByDesc('data')->orderByDesc('id');
         $movimentos = $qry->paginate(10);
-        
+
         return view('contas.detalhe')->withMovimentos($movimentos)->withConta($conta)->withCategorias($categorias);
     }
 
-    
+
 
     public function create($id){
         $conta = DB::table('contas')->where('id', $id)->first();
@@ -60,13 +60,14 @@ class MovimentoController extends Controller
     }
 
     public function store(CreateMovimento $request, $id) {
-        
+
         $conta = Conta::findOrFail($id);
         if($conta->user_id != Auth::user()->id){
             return response(view('erros.autorizacao'), 403);
         }
-
+        $request->ValidateCategory();
         $userInput = $request->validated();
+
         $movimento = new Movimento();
         $movimento->data=$userInput['data'];
         $movimento->valor=$userInput['valor'];
@@ -75,15 +76,15 @@ class MovimentoController extends Controller
         $movimento->conta_id = $conta->id;
         $movimento->descricao = $userInput['descricao'] ?? null;
 
-        if ($request->hasFile('imagem_doc')){                         
+        if ($request->hasFile('imagem_doc')){
             $movimento->imagem_doc = basename($request->file('imagem_doc')->store('docs'));
         }
 
 
         if (count($conta->movimentos()->where('data','<', $movimento->data)->get())>0){
             $saldo_final_mov_anterior = $conta->movimentos()->orderBy('data', 'desc')->orderByDesc('id')->where('data', '<=', $movimento->data)->first()->saldo_final;
-            
-            $movimento->saldo_inicial = $saldo_final_mov_anterior; 
+
+            $movimento->saldo_inicial = $saldo_final_mov_anterior;
         }else{
             $movimento->saldo_inicial= $conta->saldo_abertura;
         }
@@ -140,7 +141,7 @@ class MovimentoController extends Controller
         $data = $movimento->data;
         $movimento->delete();
 
-       
+
 
         if (count($conta->movimentos()->where('data','<', $movimento->data)->get())>0){
             $saldo_final_mov_anterior = $conta->movimentos()->orderBy('data', 'desc')->orderByDesc('id')->where('data', '<=', $movimento->data)->first()->saldo_final;
@@ -200,15 +201,15 @@ class MovimentoController extends Controller
 
         $movimento->descricao = $userInput['descricao'] ?? null;
 
-        if ($request->hasFile('imagem_doc') && $movimento->imagem_doc =! null){ 
+        if ($request->hasFile('imagem_doc') && $movimento->imagem_doc =! null){
             Storage::delete('docs/'. $movimento->imagem_doc);
             $movimento->imagem_doc = basename($request->file('imagem_doc')->store('docs'));
-        } 
+        }
 
         if (count($conta->movimentos()->where('data','<', $movimento->data)->get())>0){
             $saldo_final_mov_anterior = $conta->movimentos()->orderBy('data', 'desc')->orderByDesc('id')->where('data', '<=', $movimento->data)->where('id', '!=', $movimento->id)->first()->saldo_final;
-           
-            $movimento->saldo_inicial = $saldo_final_mov_anterior; 
+
+            $movimento->saldo_inicial = $saldo_final_mov_anterior;
         }else{
             $movimento->saldo_inicial= $conta->saldo_abertura;
         }
@@ -246,7 +247,7 @@ class MovimentoController extends Controller
 
 
 
-    
+
 
 
 }
