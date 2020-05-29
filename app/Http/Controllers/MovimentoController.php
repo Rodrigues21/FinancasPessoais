@@ -15,10 +15,20 @@ class MovimentoController extends Controller
 {
     public function movimentosConta(Request $request, $id){
 
-        $conta = DB::table('contas')->where('id', $id)->first();
+       
+        $conta = Conta::findOrFail($id);
+        $user =  Auth::user();
+        $tipo_acesso = 'completo';
+        $autorizacao = DB::table('autorizacoes_contas')->where('conta_id', $id)->where('user_id', $user->id)->first();
 
-        if($conta->user_id != Auth::user()->id){
+        if($conta->user_id != $user->id && $autorizacao == null){
             return response(view('erros.autorizacao'), 403);
+        }
+
+        if($conta->user_id != $user->id){
+            //conta partilhada
+            if($autorizacao->so_leitura)
+                $tipo_acesso = 'so_leitura';
         }
 
         $categorias = Categoria::all();
@@ -44,14 +54,18 @@ class MovimentoController extends Controller
         $qry = $qry->withTrashed()->where('conta_id', $id)->orderByDesc('data')->orderByDesc('id');
         $movimentos = $qry->paginate(10);
 
-        return view('contas.detalhe')->withMovimentos($movimentos)->withConta($conta)->withCategorias($categorias);
+        return view('contas.detalhe')->withMovimentos($movimentos)->withConta($conta)
+        ->withCategorias($categorias)->withTipoacesso($tipo_acesso);
     }
 
 
 
     public function create($id){
-        $conta = DB::table('contas')->where('id', $id)->first();
-        if($conta->user_id != Auth::user()->id){
+        $conta = Conta::findOrFail($id);
+        $user =  Auth::user();
+        $autorizacao = DB::table('autorizacoes_contas')->where('conta_id', $id)->where('user_id', $user->id)->first();
+
+        if($conta->user_id != $user->id && $autorizacao == null){
             return response(view('erros.autorizacao'), 403);
         }
 
@@ -62,7 +76,10 @@ class MovimentoController extends Controller
     public function store(CreateMovimento $request, $id) {
 
         $conta = Conta::findOrFail($id);
-        if($conta->user_id != Auth::user()->id){
+        $user =  Auth::user();
+        $autorizacao = DB::table('autorizacoes_contas')->where('conta_id', $id)->where('user_id', $user->id)->first();
+
+        if($conta->user_id != $user->id && $autorizacao == null){
             return response(view('erros.autorizacao'), 403);
         }
         $request->ValidateCategory();
@@ -133,9 +150,14 @@ class MovimentoController extends Controller
     public function destroy(Movimento $movimento)
     {
         $conta = Conta::findOrFail($movimento->conta_id);
-        if($conta->user_id != Auth::user()->id){
+        
+        $user =  Auth::user();
+        $autorizacao = DB::table('autorizacoes_contas')->where('conta_id', $id)->where('user_id', $user->id)->first();
+
+        if($conta->user_id != $user->id && $autorizacao == null){
             return response(view('erros.autorizacao'), 403);
         }
+        
 
         Storage::delete('docs/'. $movimento->imagem_doc);
         $data = $movimento->data;
@@ -175,7 +197,11 @@ class MovimentoController extends Controller
 
     public function edit(Movimento $movimento){
         $conta = Conta::findOrFail($movimento->conta_id);
-        if($conta->user_id != Auth::user()->id){
+        
+        $user =  Auth::user();
+        $autorizacao = DB::table('autorizacoes_contas')->where('conta_id', $id)->where('user_id', $user->id)->first();
+
+        if($conta->user_id != $user->id && $autorizacao == null){
             return response(view('erros.autorizacao'), 403);
         }
         $categorias = Categoria::all();

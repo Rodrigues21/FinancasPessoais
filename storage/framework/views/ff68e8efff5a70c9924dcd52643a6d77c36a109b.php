@@ -57,6 +57,7 @@
                                 </li>
                             <?php endif; ?>
                         <?php else: ?>
+                            <a class="nav-link" href="<?php echo e(route('contas.partilhadas')); ?>">Contas Partilhadas</a>
                             <a class="nav-link" href="<?php echo e(route('contas')); ?>">Contas</a>
                             <a class="nav-link" href="<?php echo e(route('perfis')); ?>">Utilizadores</a>
                             

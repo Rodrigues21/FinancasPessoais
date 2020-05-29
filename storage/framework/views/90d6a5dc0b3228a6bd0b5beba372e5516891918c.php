@@ -5,13 +5,15 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-        <h1><?php echo e($conta->nome); ?></h1>
+        <h2><?php echo e($conta->nome); ?> - <?php echo e($conta->user->name); ?></h2>
         <p><?php echo e($conta->descricao); ?></p>
         <p>Saldo Abertura: <?php echo e($conta->saldo_abertura); ?>€</p>
         <p>Saldo Atual: <?php echo e($conta->saldo_atual); ?>€</p>
-            <div class="column" style= "margin-right: 5px;  margin-bottom: 5px;">                                
-            <a  href="<?php echo e(route('movimento.create', $conta->id)); ?>" class="btn btn-success " title="Adicionar Movimento" role="button" aria-pressed="true" ><span class="fa fa-plus"></a>                                    
-            </div>
+            <?php if($tipoacesso == 'completo'): ?>
+                <div class="column" style= "margin-right: 5px;  margin-bottom: 5px;">                                
+                    <a  href="<?php echo e(route('movimento.create', $conta->id)); ?>" class="btn btn-success " title="Adicionar Movimento" role="button" aria-pressed="true" ><span class="fa fa-plus"></a>                                    
+                </div>
+            <?php endif; ?>
             <p><form action="<?php echo e(route('contas.detalhes', $conta->id)); ?>" method="GET">
                 <div class="input-group">
                    
@@ -48,7 +50,9 @@
                         <th>Saldo Final</th>
                         <th>Categoria</th>
                         <th>Tipo</th>
-                        <th>Ações</th>
+                        <?php if($tipoacesso == 'completo'): ?>
+                            <th>Ações</th>
+                        <?php endif; ?>
                         
                     </tr>
                 </thead>
@@ -62,54 +66,55 @@
                             <td><?php echo e($mov->saldo_final); ?></td>
                             <td><?php echo e($mov->categoria->nome ?? ''); ?></td>
                             <td><?php echo e($mov->tipo == 'D' ? 'Despesa' : 'Receita'); ?></td>
-                            <td style="width:13.4%">  
-                                <div class="btn-group" >            
+                            <?php if($tipoacesso == 'completo'): ?>
+                                <td style="width:13.4%">  
+                                    <div class="btn-group" >            
 
-                                    <div class="column" style= "margin-right: 5px;  margin-top: 5px;">                                
-                                        <a  href="<?php echo e(route('movimento.edit', $mov)); ?>" title="Editar Movimento" class="btn btn-secondary" role="button" aria-pressed="true" ><span class="fa fa-pencil"></a>                                    
-                                    </div>
-    
-                                    <div class="column" style= "margin-right: 5px;  margin-top: 5px;"> 
-                                        <form action="<?php echo e(route('movimento.destroy', $mov)); ?>" method="POST">
-
-                                            <?php echo csrf_field(); ?>
-                                            <?php echo method_field('delete'); ?>
-
-                                            <button type="submit" title="Apagar Movimento" class="btn btn-danger"><span class="fa fa-trash-o"></span></a></button>                              
-                                        </form> 
-                                    </div> 
-
-                                    <?php if($mov->descricao != null || $mov->imagem_doc != null): ?>
-                                        <div class="column" style= "margin-right: 5px;  margin-top: 5px;">                                     
-                                        <button type="button" title="Detalhes do Movimento"class="btn btn-primary" data-toggle="modal" data-target="#exampleModal-<?php echo e($mov->id); ?>">
-                                            <span class="fa fa-search"></span>
-                                        </button>
+                                        <div class="column" style= "margin-right: 5px;  margin-top: 5px;">                                
+                                            <a  href="<?php echo e(route('movimento.edit', $mov)); ?>" title="Editar Movimento" class="btn btn-secondary" role="button" aria-pressed="true" ><span class="fa fa-pencil"></a>                                    
                                         </div>
-                                    <?php endif; ?>
+        
+                                        <div class="column" style= "margin-right: 5px;  margin-top: 5px;"> 
+                                            <form action="<?php echo e(route('movimento.destroy', $mov)); ?>" method="POST">
 
-                                    <div class="modal fade" id="exampleModal-<?php echo e($mov->id); ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                          <div class="modal-content">
-                                            <div class="modal-header">
-                                              <h5 class="modal-title" id="exampleModalLabel">Detalhes do Movimento</h5>
-                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                              </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p><?php echo e($mov->descricao); ?></p>
+                                                <?php echo csrf_field(); ?>
+                                                <?php echo method_field('delete'); ?>
 
-                                                <?php if( isset($mov->imagem_doc) ): ?>                            
-                                                    <img src="<?php echo e(route('movimentos.doc',$mov->id)); ?>">
-                                                <?php endif; ?>
+                                                <button type="submit" title="Apagar Movimento" class="btn btn-danger"><span class="fa fa-trash-o"></span></a></button>                              
+                                            </form> 
+                                        </div> 
+
+                                        <?php if($mov->descricao != null || $mov->imagem_doc != null): ?>
+                                            <div class="column" style= "margin-right: 5px;  margin-top: 5px;">                                     
+                                            <button type="button" title="Detalhes do Movimento"class="btn btn-primary" data-toggle="modal" data-target="#exampleModal-<?php echo e($mov->id); ?>">
+                                                <span class="fa fa-search"></span>
+                                            </button>
                                             </div>
-                                            
-                                          </div>
+                                        <?php endif; ?>
+
+                                        <div class="modal fade" id="exampleModal-<?php echo e($mov->id); ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Detalhes do Movimento</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p><?php echo e($mov->descricao); ?></p>
+
+                                                    <?php if( isset($mov->imagem_doc) ): ?>                            
+                                                        <img src="<?php echo e(route('movimentos.doc',$mov->id)); ?>">
+                                                    <?php endif; ?>
+                                                </div>
+                                                
+                                            </div>
+                                            </div>
                                         </div>
-                                      </div>
-                                </div>    
-                            </td>
-                        
+                                    </div>    
+                                </td>
+                            <?php endif; ?>
                         
                         </tr>
                         

@@ -37,7 +37,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-    public function contas(){
-        return $this->hasMany('App\Conta');
+    public function contasPartilhadas(){
+        return $this->belongsToMany('App\Conta', 'autorizacoes_contas')->withPivot('so_leitura');
     }
 }

@@ -57,6 +57,7 @@
                                 </li>
                             @endif
                         @else
+                            <a class="nav-link" href="{{ route('contas.partilhadas')}}">Contas Partilhadas</a>
                             <a class="nav-link" href="{{ route('contas')}}">Contas</a>
                             <a class="nav-link" href="{{ route('perfis') }}">Utilizadores</a>
                             

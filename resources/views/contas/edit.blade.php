@@ -2,8 +2,19 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+    <div class="row">
+        <div class="col-md-12">
+            @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+        </div>
+        <div class="col-md-9">
             <div class="card">
                 <div class="card-header">{{ __('Editar Conta') }}</div>
 
@@ -65,6 +76,70 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">Adicionar Utilizadores</div>
+                <div class="card-body">
+                    <form method="POST" action="{{ route('contas.adicionar.user', $conta) }}">
+                        @csrf                         
+
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="text" name="email" class="form-control" id="email">
+                        </div>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="so_leitura" value="1">
+                            <label class="form-check-label" for="so_leitura">Só Leitura</label>
+                          </div>
+                          <button type="submit" class="btn btn-primary mb-2">Adicionar Utilizador</button>                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">Utilizadores Partilhados</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <th>Nome</th>
+                                    <th>Email</th>
+                                    <th>Tipo Acesso</th>
+                                    <th>Acções</th>
+                                </thead>
+                                <tbody>
+                                    @foreach($conta->users as $user)
+                                    <tr>
+                                        <td>{{ $user->name }}</td>
+                                        <td><button type="button" onclick="setemail('{{$user->email}}')" class="btn btn-link">{{ $user->email }}</button></td>
+                                        <td>{{ $user->pivot->so_leitura == 1 ? 'Leitura' : 'Completo' }}</td>
+                                        <td>
+                                            <div class="column" style= "margin-right: 5px;  margin-top: 5px;"> 
+                                                <form action="{{ route('conta.user.delete', [$conta->id, $user->id]) }}" method="POST">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button type="submit" title="Apagar Relação Utilizador" class="btn btn-danger"><span class="fa fa-trash-o"></span></a></button>                              
+                                                </form> 
+                                            </div> 
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 @endsection
+<script>
+    function setemail(email){
+        document.getElementById("email").value = email;
+    }
+</script>

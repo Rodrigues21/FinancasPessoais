@@ -36,6 +36,9 @@ Route::post('/contas/{conta}/edit', 'ContaController@update')->name('contas.upda
 Route::get('/contas/{conta}/delete', 'ContaController@delete')->name('contas.delete')->middleware('auth');
 Route::get('/contas/{conta}/forcedelete', 'ContaController@forcedelete')->name('contas.forcedelete')->middleware('auth');
 Route::get('/contas/{conta}/activate', 'ContaController@activate')->name('contas.activate')->middleware('auth');
+Route::get('/contas/partilhadas', 'ContaController@contasPartilhadas')->name('contas.partilhadas')->middleware('auth');
+Route::post('contas/partilhadas/create/{id}','ContaController@addtoconta')->name('contas.adicionar.user')->middleware('auth');
+Route::delete('contas/partilhadas/delete/{conta}/{user}','ContaController@deletetoconta')->name('conta.user.delete')->middleware('auth');
 
 Route::get('/contas/detalhes/{conta}', 'MovimentoController@movimentosConta')->name('contas.detalhes')->middleware('auth');
 Route::get('/contas/detalhes/{conta}/create', 'MovimentoController@create')->name('movimento.create')->middleware('auth');

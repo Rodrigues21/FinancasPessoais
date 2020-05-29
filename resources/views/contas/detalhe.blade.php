@@ -5,13 +5,15 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-        <h1>{{$conta->nome}}</h1>
+        <h2>{{$conta->nome}} - {{$conta->user->name}}</h2>
         <p>{{$conta->descricao}}</p>
         <p>Saldo Abertura: {{$conta->saldo_abertura}}€</p>
         <p>Saldo Atual: {{$conta->saldo_atual}}€</p>
-            <div class="column" style= "margin-right: 5px;  margin-bottom: 5px;">                                
-            <a  href="{{ route('movimento.create', $conta->id)}}" class="btn btn-success " title="Adicionar Movimento" role="button" aria-pressed="true" ><span class="fa fa-plus"></a>                                    
-            </div>
+            @if($tipoacesso == 'completo')
+                <div class="column" style= "margin-right: 5px;  margin-bottom: 5px;">                                
+                    <a  href="{{ route('movimento.create', $conta->id)}}" class="btn btn-success " title="Adicionar Movimento" role="button" aria-pressed="true" ><span class="fa fa-plus"></a>                                    
+                </div>
+            @endif
             <p><form action="{{route('contas.detalhes', $conta->id)}}" method="GET">
                 <div class="input-group">
                    
@@ -48,7 +50,9 @@
                         <th>Saldo Final</th>
                         <th>Categoria</th>
                         <th>Tipo</th>
-                        <th>Ações</th>
+                        @if($tipoacesso == 'completo')
+                            <th>Ações</th>
+                        @endif
                         
                     </tr>
                 </thead>
@@ -62,54 +66,55 @@
                             <td>{{$mov->saldo_final}}</td>
                             <td>{{$mov->categoria->nome ?? ''}}</td>
                             <td>{{$mov->tipo == 'D' ? 'Despesa' : 'Receita'}}</td>
-                            <td style="width:13.4%">  
-                                <div class="btn-group" >            
+                            @if($tipoacesso == 'completo')
+                                <td style="width:13.4%">  
+                                    <div class="btn-group" >            
 
-                                    <div class="column" style= "margin-right: 5px;  margin-top: 5px;">                                
-                                        <a  href="{{ route('movimento.edit', $mov) }}" title="Editar Movimento" class="btn btn-secondary" role="button" aria-pressed="true" ><span class="fa fa-pencil"></a>                                    
-                                    </div>
-    
-                                    <div class="column" style= "margin-right: 5px;  margin-top: 5px;"> 
-                                        <form action="{{ route('movimento.destroy', $mov) }}" method="POST">
-
-                                            @csrf
-                                            @method('delete')
-
-                                            <button type="submit" title="Apagar Movimento" class="btn btn-danger"><span class="fa fa-trash-o"></span></a></button>                              
-                                        </form> 
-                                    </div> 
-
-                                    @if($mov->descricao != null || $mov->imagem_doc != null)
-                                        <div class="column" style= "margin-right: 5px;  margin-top: 5px;">                                     
-                                        <button type="button" title="Detalhes do Movimento"class="btn btn-primary" data-toggle="modal" data-target="#exampleModal-{{$mov->id}}">
-                                            <span class="fa fa-search"></span>
-                                        </button>
+                                        <div class="column" style= "margin-right: 5px;  margin-top: 5px;">                                
+                                            <a  href="{{ route('movimento.edit', $mov) }}" title="Editar Movimento" class="btn btn-secondary" role="button" aria-pressed="true" ><span class="fa fa-pencil"></a>                                    
                                         </div>
-                                    @endif
+        
+                                        <div class="column" style= "margin-right: 5px;  margin-top: 5px;"> 
+                                            <form action="{{ route('movimento.destroy', $mov) }}" method="POST">
 
-                                    <div class="modal fade" id="exampleModal-{{$mov->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                          <div class="modal-content">
-                                            <div class="modal-header">
-                                              <h5 class="modal-title" id="exampleModalLabel">Detalhes do Movimento</h5>
-                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                              </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>{{$mov->descricao}}</p>
+                                                @csrf
+                                                @method('delete')
 
-                                                @if ( isset($mov->imagem_doc) )                            
-                                                    <img src="{{route('movimentos.doc',$mov->id)}}">
-                                                @endif
+                                                <button type="submit" title="Apagar Movimento" class="btn btn-danger"><span class="fa fa-trash-o"></span></a></button>                              
+                                            </form> 
+                                        </div> 
+
+                                        @if($mov->descricao != null || $mov->imagem_doc != null)
+                                            <div class="column" style= "margin-right: 5px;  margin-top: 5px;">                                     
+                                            <button type="button" title="Detalhes do Movimento"class="btn btn-primary" data-toggle="modal" data-target="#exampleModal-{{$mov->id}}">
+                                                <span class="fa fa-search"></span>
+                                            </button>
                                             </div>
-                                            
-                                          </div>
+                                        @endif
+
+                                        <div class="modal fade" id="exampleModal-{{$mov->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Detalhes do Movimento</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>{{$mov->descricao}}</p>
+
+                                                    @if ( isset($mov->imagem_doc) )                            
+                                                        <img src="{{route('movimentos.doc',$mov->id)}}">
+                                                    @endif
+                                                </div>
+                                                
+                                            </div>
+                                            </div>
                                         </div>
-                                      </div>
-                                </div>    
-                            </td>
-                        
+                                    </div>    
+                                </td>
+                            @endif
                         
                         </tr>
                         

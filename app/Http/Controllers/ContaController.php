@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Conta;
 use App\Movimento;
+use App\User;
+use App\AutorizacoesConta;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CreateConta;
+use App\Http\Requests\AddUserConta;
 use App\Rules\EditarConta;
 
 use Illuminate\Support\Facades\DB;
@@ -15,9 +18,12 @@ class ContaController extends Controller
 {
     public function index()
     {
-        //$contas = Conta::where('user_id', $id)->paginate(5);
+        
         $user = Auth::user();
+
+        
         $qry = Conta::query();
+        
         if(request()->get('apagadas') == null){   
 
             $qry = $qry->where('user_id', $user->id);
@@ -39,6 +45,7 @@ class ContaController extends Controller
     public function store(CreateConta $request) {
 
         $userInput = $request->validated();
+        
 
         $conta = new Conta();
         $conta->fill($userInput);
@@ -56,6 +63,7 @@ class ContaController extends Controller
             return response(view('erros.autorizacao'), 403);
         }
 
+        
         return view('contas.edit')->withConta($conta);
     }
 
@@ -150,6 +158,51 @@ class ContaController extends Controller
 
         return redirect()->route('contas')
         ->with('alert-msg', 'Conta ativada Com Sucesso!')
+        ->with('alert-type', 'success');
+    }
+
+    public function contasPartilhadas(){
+
+        $user = Auth::user();
+        
+        $partilhadas = $user->contasPartilhadas()->get()->map(function ($item, $key) {            
+            $item->nome_dono = User::find($item->user_id)->name;
+            return $item;
+        });        
+
+        return view('contas.partilhadas')->withPartilhadas($partilhadas);
+
+    }
+
+    public function addtoconta($id, AddUserConta $request){
+
+        $userInput = $request->validated();
+
+        //dd($userInput);
+        $user_id = User::where('email',$userInput['email'])->first()->id;
+
+        AutorizacoesConta::where('conta_id',$id)
+        ->where('user_id',$user_id)->delete();
+        
+        $aux = new AutorizacoesConta();
+        $aux->so_leitura = isset($userInput['so_leitura']) ? true : false;
+        $aux->user_id = $user_id;
+        $aux->conta_id = $id;
+        $aux->save();
+
+        return redirect()->route('contas.edit',[$id])
+        ->with('alert-msg', 'Utilizador associado com sucesso')
+        ->with('alert-type', 'success');
+
+    }
+
+    public function deletetoconta($conta, $user){
+
+        AutorizacoesConta::where('conta_id',$conta)
+        ->where('user_id',$user)->delete();
+
+        return redirect()->route('contas.edit',[$conta])
+        ->with('alert-msg', 'Utilizador apagado com sucesso')
         ->with('alert-type', 'success');
     }
 
