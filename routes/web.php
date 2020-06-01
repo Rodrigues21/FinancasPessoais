@@ -20,6 +20,9 @@ Auth::routes(['verify' => true]);
 Route::get('/me', 'UserController@index')->name('me')->middleware('auth');
 Route::get('/me/edit', 'UserController@edit')->name('me.edit')->middleware('auth');
 Route::put('/me/edit', 'UserController@update')->name('me.update')->middleware('auth');
+Route::get('/me/delete', 'UserController@deleteview')->name('me.delete.view')->middleware('auth');
+Route::delete('/me/delete', 'UserController@delete')->name('me.delete')->middleware('auth');
+Route::get('me/estatisticas', 'UserController@estatisticas')->name('me.estatisticas')->middleware('auth');
 
 Route::get('/me/edit/password', 'UserController@editPassword')->name('me.edit.password')->middleware('auth');
 Route::patch('/me/edit/password', 'UserController@updatePassword')->name('me.update.password')->middleware('auth');

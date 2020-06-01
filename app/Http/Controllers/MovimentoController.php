@@ -199,7 +199,7 @@ class MovimentoController extends Controller
         $conta = Conta::findOrFail($movimento->conta_id);
         
         $user =  Auth::user();
-        $autorizacao = DB::table('autorizacoes_contas')->where('conta_id', $id)->where('user_id', $user->id)->first();
+        $autorizacao = DB::table('autorizacoes_contas')->where('conta_id', $conta->id)->where('user_id', $user->id)->first();
 
         if($conta->user_id != $user->id && $autorizacao == null){
             return response(view('erros.autorizacao'), 403);

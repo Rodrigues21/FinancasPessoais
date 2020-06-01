@@ -45,7 +45,7 @@
             </div>
 
             <div class="column" style= "margin-right: 5px;  margin-top: 5px;">                                
-                <a  href="#" class="btn btn-danger" title = "Apagar Conta" role="button" aria-pressed="true" ><span class="fa fa-trash-o"></a>                                    
+                <a  href="<?php echo e(route('me.delete.view')); ?>" class="btn btn-danger" title = "Apagar Conta" role="button" aria-pressed="true" ><span class="fa fa-trash-o"></a>                                    
             </div>
         </div>
     </div>

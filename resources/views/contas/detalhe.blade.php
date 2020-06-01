@@ -71,7 +71,7 @@
                                     <div class="btn-group" >            
 
                                         <div class="column" style= "margin-right: 5px;  margin-top: 5px;">                                
-                                            <a  href="{{ route('movimento.edit', $mov) }}" title="Editar Movimento" class="btn btn-secondary" role="button" aria-pressed="true" ><span class="fa fa-pencil"></a>                                    
+                                            <a  href="{{ route('movimento.edit', $mov) }}" title="Editar Movimento" class="btn btn-secondary" role="button" aria-pressed="true" ><span class="fa fa-pencil"></span></a>                                    
                                         </div>
         
                                         <div class="column" style= "margin-right: 5px;  margin-top: 5px;"> 

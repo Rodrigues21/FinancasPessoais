@@ -109,21 +109,27 @@
                                     <th>Nome</th>
                                     <th>Email</th>
                                     <th>Tipo Acesso</th>
-                                    <th>Acções</th>
+                                    <th>Ações</th>
                                 </thead>
                                 <tbody>
                                     @foreach($conta->users as $user)
                                     <tr>
                                         <td>{{ $user->name }}</td>
-                                        <td><button type="button" onclick="setemail('{{$user->email}}')" class="btn btn-link">{{ $user->email }}</button></td>
+                                        <td>{{$user->email}}</td>
                                         <td>{{ $user->pivot->so_leitura == 1 ? 'Leitura' : 'Completo' }}</td>
                                         <td>
-                                            <div class="column" style= "margin-right: 5px;  margin-top: 5px;"> 
-                                                <form action="{{ route('conta.user.delete', [$conta->id, $user->id]) }}" method="POST">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button type="submit" title="Apagar Relação Utilizador" class="btn btn-danger"><span class="fa fa-trash-o"></span></a></button>                              
-                                                </form> 
+                                            <div class="btn-group" >   
+                                                <div class="column" style= "margin-right: 5px;  margin-top: 5px;"> 
+                                                    <button type="button" onclick="setemail('{{$user->email}}')" class="btn btn-secondary"><span class="fa fa-pencil"></span></button>
+                                                </div>
+
+                                                <div class="column" style= "margin-right: 5px;  margin-top: 5px;"> 
+                                                    <form action="{{ route('conta.user.delete', [$conta->id, $user->id]) }}" method="POST">
+                                                        @csrf
+                                                        @method('delete')
+                                                        <button type="submit" title="Apagar Relação Utilizador" class="btn btn-danger"><span class="fa fa-trash-o"></span></a></button>                              
+                                                    </form> 
+                                                </div> 
                                             </div> 
                                         </td>
                                     </tr>

@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\AutorizacoesConta;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UpdateUserPost;
 use App\Http\Requests\UpdatePass;
+use App\Http\Requests\ApagarConta;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 
@@ -134,6 +136,109 @@ class UserController extends Controller
         }
 
         return redirect()->route('perfis');
+    }
+
+    public function estatisticas(Request $request){
+        $user = Auth::user();
+        $contas = $user->contas()->get();
+        $saldo_total=0;
+        $total_receita=0;
+        $total_despesa=0;
+
+        foreach ($contas as $conta){
+            $saldo_total += $conta->saldo_atual;
+            $movimentos = $conta->movimentos()->get();
+
+            foreach( $movimentos as $movimento){
+                if ($request->filled('data1') && !$request->filled('data2')){
+                    if($movimento->tipo == 'R' && $movimento->data == $request->data1 ){
+                        $total_receita += $movimento->valor;
+                        
+                    }
+                    if($movimento->tipo == 'D' && $movimento->data == $request->data1 ){
+                        $total_despesa += $movimento->valor;
+                    }
+                }elseif(!$request->filled('data1') && $request->filled('data2')){
+                    if($movimento->tipo == 'R' && $movimento->data == $request->data2 ){
+                        $total_receita += $movimento->valor;
+                        
+                    }
+                    if($movimento->tipo == 'D' && $movimento->data == $request->data2 ){
+                        $total_despesa += $movimento->valor;
+                    }
+
+                }elseif($request->filled('data1') && $request->filled('data2')){
+                    if($movimento->tipo == 'R' && $movimento->data >= $request->data1 && $movimento->data <= $request->data2){
+                        $total_receita += $movimento->valor;
+                        
+                    }
+                    if($movimento->tipo == 'D' && $movimento->data >= $request->data1 && $movimento->data <= $request->data2){
+                        $total_despesa += $movimento->valor;
+                    }
+
+                }
+                else{
+
+                    if($movimento->tipo == 'R'){
+                        $total_receita += $movimento->valor;
+                    }else{
+                        $total_despesa += $movimento->valor;
+                    }
+
+                }
+
+                
+                
+                
+            }
+        }
+        return view('user.estatisticas')->withSaldoTotal($saldo_total)->withContas($contas)
+        ->withDespesaTotal($total_despesa)->withReceitaTotal($total_receita);
+    }
+
+    public function deleteview(){
+        
+        return view('user.apagar');
+
+    }
+
+    public function delete(ApagarConta $request){
+        $userInput = $request->validated();
+        $user = Auth::user();
+        $autorizacoes= AutorizacoesConta::where('user_id', $user->id)->delete();
+        
+
+        /*foreach($autorizacoes as $autorizacao){
+            
+            $autorizacao->delete();
+            dd($autorizacao);
+        }*/
+
+        $contas = $user->contas()->withTrashed()->get();
+
+        foreach($contas as $conta){
+            
+            $autorizacoes= AutorizacoesConta::where('conta_id', $conta->id)->delete();
+            
+            
+            
+            $movimentos = $conta->movimentos()->withTrashed()->get();
+
+            foreach($movimentos as $movimento){
+                $movimento->forcedelete();
+            }
+
+            $conta->forcedelete(); 
+            
+        }
+        
+        
+
+        $user->delete();
+
+        return redirect()->route('home');
+        
+
     }
 
 
